@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import 'h8k-components'
 
 import { image1, image2, image3, image4 } from './assets/images'
@@ -28,8 +28,9 @@ function App() {
 
   const [ catalogs ] = useState([...catalogsList])
   const [ activeIndex, setActiveIndex ] = useState(0)
-  const [ slideTimer, setSlideTimer ] = useState(null)
-  const [ slideDuration ] = useState(3000)
+  const [isSlideShowActive, setIsSlideShowActive] = useState(false);
+ // const [slideTimer, setSlideTimer] = useState(null);
+  const [slideDuration] = useState(2000);
 
   const handleIndex = (index) => {
     setActiveIndex(index);
@@ -44,6 +45,28 @@ function App() {
   const handleNextSlide = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % catalogs.length);
   };
+
+  const handlleCheckbox = () => {
+    setIsSlideShowActive(!isSlideShowActive);
+  };
+  
+  // Use effect to handle the slideshow when checkbox is toggled
+  useEffect(() => {
+    let interval;
+    if (isSlideShowActive) {
+      interval = setInterval(() => {
+        handleNextSlide();
+      }, slideDuration);
+    }
+
+    //  when slideshow is stopped
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isSlideShowActive, slideDuration]);
+
   return (
     <Fragment>
       <h8k-navbar header={ title }></h8k-navbar>
@@ -78,6 +101,7 @@ function App() {
           <input 
             type='checkbox'
             data-testid='toggle-slide-show-button'
+            onClick={handlleCheckbox}
           /> 
           <label className='ml-6'>Start Slide Show</label>
         </div>
