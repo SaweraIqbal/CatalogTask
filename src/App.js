@@ -41,7 +41,9 @@ function App() {
     );
   };
 
-
+  const handleNextSlide = () => {
+    setActiveIndex((prevIndex) => (prevIndex + 1) % catalogs.length);
+  };
   return (
     <Fragment>
       <h8k-navbar header={ title }></h8k-navbar>
@@ -65,7 +67,7 @@ function App() {
             <button 
               className="icon-only outlined"
               data-testid="next-slide-btn"
-
+              onClick={handleNextSlide}
             >
               <i className="material-icons">arrow_forward</i>
             </button>
