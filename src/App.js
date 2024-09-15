@@ -31,6 +31,17 @@ function App() {
   const [ slideTimer, setSlideTimer ] = useState(null)
   const [ slideDuration ] = useState(3000)
 
+  const handleIndex = (index) => {
+    setActiveIndex(index);
+  };
+
+  const handlePrevSlide = () => {
+    setActiveIndex((prevIndex) =>
+      prevIndex === 0 ? catalogs.length - 1 : (prevIndex - 1) % catalogs.length
+    );
+  };
+
+
   return (
     <Fragment>
       <h8k-navbar header={ title }></h8k-navbar>
@@ -42,16 +53,19 @@ function App() {
             <button 
               className="icon-only outlined"
               data-testid="prev-slide-btn"
+              onClick={handlePrevSlide}
             >
               <i className="material-icons">arrow_back</i>
             </button>
               <Thumbs 
                 items={ catalogs } 
                 currentIndex={ activeIndex } 
+                handleIndex={handleIndex}
               />
             <button 
               className="icon-only outlined"
               data-testid="next-slide-btn"
+
             >
               <i className="material-icons">arrow_forward</i>
             </button>
